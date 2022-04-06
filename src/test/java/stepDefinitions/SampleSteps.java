@@ -4,6 +4,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -24,6 +25,31 @@ public class SampleSteps {
     @Given("^I am on the home page$")
     public void iAmOnTheHomePage() throws Throwable {
         driver.get("https://kristinek.github.io/site");
+    }
+
+    @When("^I am on the locators page$")
+    public void iAmOnTheLocatorsPage() throws Throwable {
+        driver.get("https://kristinek.github.io/site/examples/locators");
+    }
+
+    @Then("^I should see both locators page headers$")
+    public void i_should_see_both_locators_page_headers() throws Throwable {
+
+        WebElement heading1 = driver.findElement(By.id("heading_1"));
+        WebElement heading2 = driver.findElement(By.id("heading_2"));
+
+        assertTrue(heading1.isDisplayed());
+        assertEquals("Heading 1", heading1.getText());
+
+        assertTrue(heading2.isDisplayed());
+        assertEquals("Heading 2 text", heading2.getText());
+
+    }
+
+    @Then("^Buttons in Locators page are clickable$")
+    public void buttons_in_Locators_page_are_clickable() throws Throwable {
+        assertTrue(driver.findElement(By.name("randomButton1")).isEnabled());
+        assertTrue(driver.findElement(By.name("randomButton2")).isEnabled());
     }
 
     @Then("^I should see home page header$")
@@ -100,4 +126,79 @@ public class SampleSteps {
     public void iAmOnActionPage() {
         driver.get("https://kristinek.github.io/site/examples/actions");
     }
+
+    @Then("^I see error: \"([^\"]*)\"$")
+    public void i_see_error(String errorMsg) {
+        String actualErrorMsg = driver.findElement(By.id("error")).getText();
+        assertEquals(errorMsg, actualErrorMsg);
+    }
+
+    @Then("^I am not navigated to age message page$")
+    public void i_am_not_navigated_to_age_message_page() {
+        assertEquals("https://kristinek.github.io/site/examples/age", driver.getCurrentUrl());
+    }
+
+
+    @Given("^I am on the feedback page$")
+    public void i_am_on_the_feedback_page() {
+        driver.get("https://kristinek.github.io/site/tasks/provide_feedback");
+    }
+
+    @When("^I enter name: \"([^\"]*)\" on feedback page$")
+    public void i_enter_name_on_feedback_page(String name) {
+        driver.findElement(By.name("name")).sendKeys(name);
+    }
+
+    @When("^I enter age: \"([^\"]*)\" on feedback page$")
+    public void i_enter_age_on_feedback_page(String age) {
+        driver.findElement(By.name("age")).sendKeys(age);
+    }
+
+    @When("^I click submit on feedback page$")
+    public void i_click_submit_on_feedback_page() {
+        driver.findElement(By.xpath("//button[.='Send']")).click();
+    }
+
+    @Then("^I see \"([^\"]*)\" in Your name: field$")
+    public void i_see_in_Your_name_field(String name) {
+        assertEquals("Name is incorrect", name, driver.findElement(By.id("name")).getText());
+    }
+
+    @Then("^I see \"([^\"]*)\" in Your age: field$")
+    public void i_see_in_Your_age_field(String age) {
+        assertEquals("Age is incorrect", age, driver.findElement(By.id("age")).getText());
+    }
+
+    // Task 1 steps
+
+    @Given("^I am on Enter a number page$")
+    public void i_am_on_Enter_a_number_page() {
+        driver.get("https://kristinek.github.io/site/tasks/enter_a_number");
+    }
+
+    @When("^I enter \"([^\"]*)\" in Enter a number page$")
+    public void i_enter_in_Enter_a_number_page(String number) {
+        System.out.println(number);
+        driver.findElement(By.id("numb")).sendKeys(number);
+    }
+
+    @When("^I click Submit button in Enter a number page$")
+    public void i_click_Submit_button_in_Enter_a_number_page() throws Throwable {
+        driver.findElement(By.xpath("//button[.='Submit']")).click();
+    }
+
+    @Then("^Error message \"([^\"]*)\" appears in Enter a number page$")
+    public void error_message_appears_in_Enter_a_number_page(String errorMessage) throws Throwable {
+        WebElement errorElement = driver.findElement(By.id("ch1_error"));
+        assertTrue(errorElement.isDisplayed());
+        assertEquals(errorMessage, errorElement.getText());
+    }
+
+    @Then("^Alert message \"([^\"]*)\" appears$")
+    public void alert_message_appears(String message) throws Throwable {
+        Alert alert = driver.switchTo().alert();
+        assertEquals(message, alert.getText());
+        alert.accept();
+    }
+
 }
