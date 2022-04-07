@@ -115,8 +115,6 @@ Feature: tests Enter a number page
       | number |
       | "22"   |
 
-
-  @wip
   Scenario Outline: allowed numbers
     When I enter "<number>" in Enter a number page
     And I click Submit button in Enter a number page

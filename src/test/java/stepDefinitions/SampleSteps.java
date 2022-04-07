@@ -201,4 +201,42 @@ public class SampleSteps {
         alert.accept();
     }
 
+//    Sample 4 feature steps
+
+    @When("^I select feedback languages$")
+    public void i_select_feedback_languages(List<String> languages) {
+        for (String language : languages) {
+            String cssSelector = String.format("input[name='language'][value='%s']", language);
+            driver.findElement(By.cssSelector(cssSelector)).click();
+        }
+    }
+
+    @Then("^I can see languages \"([^\"]*)\" in feedback check$")
+    public void i_can_see_languages_in_feedback_check(String expectedLanguages) {
+        String actualLanguages = driver.findElement(By.id("language")).getText();
+        assertEquals("Language list", expectedLanguages, actualLanguages);
+    }
+
+    @When("^I enter values in feedback page:$")
+    public void i_enter_values_in_feedback_page(Map<String, String> fieldsData) {
+        for (String field : fieldsData.keySet()) {
+            if (field.equals("name") || field.equals("age")) {
+                driver.findElement(By.name(field)).sendKeys(fieldsData.get(field));
+            }
+            if (field.equals("gender")) {
+                String genreCssSelector = String.format("input[name='gender'][value='%s']", fieldsData.get("gender"));
+                driver.findElement(By.cssSelector(genreCssSelector)).click();
+            }
+        }
+    }
+
+    @Then("^I see data in summary page$")
+    public void i_see_data_in_summary_page(Map<String, String> fieldsData) {
+        for (String field : fieldsData.keySet()) {
+            String expectedValue = fieldsData.get(field);
+            String actualValue = driver.findElement(By.id(field)).getText();
+            assertEquals(field, expectedValue, actualValue);
+        }
+    }
+
 }

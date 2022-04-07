@@ -31,3 +31,39 @@ Feature: Introduction to cucumber part 4
       | Ann  | 5   | Hello, Ann, you are a kid    |
       | Bob  | 61  | Hello, Bob, you are an adult |
 
+# TODO - create Scenario for 'Give us your feedback!' page
+  # URL: https://kristinek.github.io/site/tasks/provide_feedback
+  # Navigate to page
+  # Set Name, Age and Genre
+  # - All input MUST be done in single step
+  # - Step can use Map or Domain object
+  # Click "Send" button and verify that previous input is displayed in correct fields
+
+
+  Scenario: Name, Age and Genre test
+    Given I am on the feedback page
+    When I enter values in feedback page:
+      | name   | Elizabeth |
+      | age    | 19        |
+      | gender | female    |
+    And I click submit on feedback page
+    Then I see data in summary page
+      | name   | Elizabeth |
+      | age    | 19        |
+      | gender | female    |
+
+  Scenario Outline: Name, Age and Genre test using Scenario Outline
+    Given I am on the feedback page
+    When I enter values in feedback page:
+      | name   | <name>   |
+      | age    | <age>    |
+      | gender | <gender> |
+    And I click submit on feedback page
+    Then I see data in summary page
+      | name   | <name>   |
+      | age    | <age>    |
+      | gender | <gender> |
+    Examples:
+      | name  | age | gender |
+      | Maria | 28  | female |
+      | Janis | 33  | male   |
